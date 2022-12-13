@@ -1,11 +1,13 @@
 package com.aamir.user.entity;
 
 import com.aamir.user.regex.RegexConstant;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Data
@@ -16,7 +18,7 @@ import java.sql.Timestamp;
 @ToString
 @Entity
 @Table(name = "USER")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USER_ID")
@@ -33,10 +35,16 @@ public class User {
     private String userEmail;
     @Column(name = "ABOUT")
     private String about;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @Column(name = "DATE_OF_BIRTH", columnDefinition = "insert your date of birth")
+    private Timestamp dob;
     @Column(name = "CREATED_ON")
     private Timestamp createdOn;
     @Column(name = "UPDATED_ON")
     private Timestamp updatedOn;
 
+    @Column(name = "ACTIVE_USER", insertable = true)
+    private Boolean activeUser;
 
 }
