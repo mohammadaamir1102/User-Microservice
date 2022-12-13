@@ -6,7 +6,7 @@ public class RegexConstant {
     public static final String DECIMAL_TWO_DIGIT = "^\\-?[0-9]+(?:\\.[0-9]{1,2})?$";
     public static final String DECIMAL_TWO_DIGIT_WITH_COMMA = "^[0-9]*\\.?[0-9]+$";
     public static final String NUMBERS_WITH_DECIMALS = "^$|^[0-9]*\\.?[0-9]+$";
-    public static final String ALPHABETS_ONLY = "^[a-zA-Z]*$";
+    public static final String ALPHABETS_ONLY = "^[a-zA-Z  ]*$";
     public static final String ALPHANUMERIC_ONLY = "^[a-zA-Z0-9 ]*$";
     public static final String ALPHABETS_WITH_HYPHEN = "^[a-zA-Z-]*$";
     public static final String ALPHABETS_WITH_SPACE = "^[a-zA-Z ]*$";

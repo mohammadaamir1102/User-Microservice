@@ -3,6 +3,9 @@ package com.aamir.user.entity;
 import com.aamir.user.regex.RegexConstant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -17,7 +20,7 @@ import java.sql.Timestamp;
 @Setter
 @ToString
 @Entity
-@Table(name = "USER")
+@Table(name = "USER_MICRO")
 public class User implements Serializable {
 
     @Id
@@ -33,18 +36,20 @@ public class User implements Serializable {
     @Pattern(regexp = RegexConstant.EMAIL, message = "Mail Should be Proper !")
     @Column(name = "USER_EMAIL")
     private String userEmail;
-    @Column(name = "ABOUT")
+    @Column(name = "USER_ABOUT")
     private String about;
-
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    @Column(name = "DATE_OF_BIRTH", columnDefinition = "insert your date of birth")
-    private Timestamp dob;
-    @Column(name = "CREATED_ON")
-    private Timestamp createdOn;
-    @Column(name = "UPDATED_ON")
-    private Timestamp updatedOn;
 
     @Column(name = "ACTIVE_USER", insertable = true)
     private Boolean activeUser;
+    @JsonFormat(pattern = "dd-mm-yyyy")
+    @Column(name = "USER_DOB")
+    private Timestamp dob;
+    @CreationTimestamp
+    @Column(name = "CREATED_ON")
+    private Timestamp createdOn;
+
+    @UpdateTimestamp
+    @Column(name = "UPDATED_ON")
+    private Timestamp updatedOn;
 
 }
