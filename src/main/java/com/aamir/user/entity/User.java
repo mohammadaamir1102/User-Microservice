@@ -1,15 +1,11 @@
 package com.aamir.user.entity;
 
-import com.aamir.user.regex.RegexConstant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -29,11 +25,9 @@ public class User implements Serializable {
     @Column(name = "USER_ID", unique = true, nullable = false)
     private Long userId;
 
-    @NotBlank(message = "User Name is required & ALPHABETS ONLY !")
-    @Pattern(regexp = RegexConstant.ALPHABETS_ONLY, message = "use ALPHABETS ONLY")
     @Column(name = "USER_NAME")
     private String userName;
-    @Pattern(regexp = RegexConstant.EMAIL, message = "Mail Should be Proper !")
+
     @Column(name = "USER_EMAIL")
     private String userEmail;
     @Column(name = "USER_ABOUT")

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,11 +29,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long userId) throws ResourceNotFoundException {
         return userRepository.findById(userId).orElseThrow(
-                ()-> new ResourceNotFoundException(userId + "user is not exist on server"));
+                () -> new ResourceNotFoundException(userId + "user is not exist on server"));
     }
 
+
     @Override
-    public User deleteById(Long userId) {
-        return null;
+    public User deleteUser(Long userId) throws ResourceNotFoundException {
+        Optional<User> user = userRepository.findById(userId);
+        User userForUpdate = null;
+        if (!user.isPresent()) {
+            throw new ResourceNotFoundException(userId + "user is not exist");
+        } else {
+            userForUpdate = user.get();
+            userForUpdate.setActiveUser(Boolean.FALSE);
+            userRepository.save(userForUpdate);
+            return userForUpdate;
+        }
     }
 }
