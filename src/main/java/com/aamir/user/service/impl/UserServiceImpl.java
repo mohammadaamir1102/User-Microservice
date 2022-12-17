@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
             userForUpdate = user.get();
             userForUpdate.setActiveUser(Boolean.FALSE);
             userRepository.save(userForUpdate);
+            log.info("/* deleted user {} */ ", userForUpdate);
             return userForUpdate;
         }
     }
@@ -63,6 +64,7 @@ public class UserServiceImpl implements UserService {
     public Map findAllUsers(PaginationDTO paginationDTO) throws ServiceException {
         Page<User> users = userRepository.findAll(paginationService.getPagination(paginationDTO));
         List<User> activeUsers = users.stream().filter(activeUser -> activeUser.getActiveUser() != false).collect(Collectors.toList());
+        log.info("/* user records {} */", activeUsers);
         Map<String, Object> datamap = new HashMap<>();
         datamap.put("data", activeUsers);
         datamap.put("totalPage", users.getTotalPages());
