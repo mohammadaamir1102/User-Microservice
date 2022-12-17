@@ -1,4 +1,4 @@
-package com.aamir.user.regex;
+package com.aamir.user.constant;
 
 public class RegexConstant {
 
