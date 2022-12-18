@@ -21,6 +21,6 @@ public class PaginationServiceImpl implements PaginationService {
                     ErrorConstant.OFFSET_AND_PAGE_NUMBER_MESSAGE);
             throw new ServiceException(serviceError, HttpStatus.BAD_REQUEST);
         }
-        return PageRequest.of(paginationDTO.getPageNumber(), paginationDTO.getPageNumber(), Sort.by("userId").descending());
+        return PageRequest.of(paginationDTO.getPageNumber(), paginationDTO.getOffset(), Sort.by("userId").descending());
     }
 }
