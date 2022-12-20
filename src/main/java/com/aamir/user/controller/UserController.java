@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RequestMapping("/users")
@@ -63,5 +64,14 @@ public class UserController {
         Map allUsers = userService.findAllUsers(paginationDTO);
         log.info("/* all users {} */ ", allUsers);
         return ResponseEntity.status(HttpStatus.OK).body(allUsers);
+    }
+    //  below api only for learning purpose
+    @GetMapping("/findTop1ByUserName/{userName}")
+    public ResponseEntity<User> findTop1ByUserName(@PathVariable String userName) throws ResourceNotFoundException {
+        log.info("/* user name {} */ ", userName);
+        Optional<User> userOptional = userService.findTop1ByUserName(userName);
+        log.info("/* user data {} */ ", userOptional);
+        User user = userOptional.get();
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 }

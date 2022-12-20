@@ -72,4 +72,9 @@ public class UserServiceImpl implements UserService {
         datamap.put("totalRecords", activeUsers.size());
         return datamap;
     }
+
+    @Override
+    public Optional<User> findTop1ByUserName(String userName) {
+        return userRepository.findTop1ByUserNameOrderByCreatedOnDesc(userName);
+    }
 }

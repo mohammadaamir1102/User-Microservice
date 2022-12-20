@@ -7,6 +7,7 @@ import com.aamir.user.exception.ServiceException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -20,4 +21,6 @@ public interface UserService {
     User deleteUser(Long userId) throws ResourceNotFoundException;
 
     Map findAllUsers(PaginationDTO paginationDTO) throws ServiceException;
+
+    Optional<User> findTop1ByUserName(String userName);
 }
