@@ -15,4 +15,5 @@ public class Rating {
     private Long hotelId;
     private Integer rating;
     private String feedBack;
+    private Hotel hotel;
 }

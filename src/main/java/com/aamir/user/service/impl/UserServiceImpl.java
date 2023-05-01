@@ -1,6 +1,8 @@
 package com.aamir.user.service.impl;
 
 import com.aamir.user.dto.PaginationDTO;
+import com.aamir.user.entity.Hotel;
+import com.aamir.user.entity.Rating;
 import com.aamir.user.entity.User;
 import com.aamir.user.exception.ResourceNotFoundException;
 import com.aamir.user.exception.ServiceException;
@@ -9,15 +11,15 @@ import com.aamir.user.service.PaginationService;
 import com.aamir.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,6 +31,15 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PaginationService paginationService;
+
+    @Value("${service.api.rating-url}")
+    private String ratingURL;
+
+    @Value("${service.api.hotel-url}")
+    private String hotelURL;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public User saveUser(User user) {
@@ -42,8 +53,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long userId) throws ResourceNotFoundException {
-        return userRepository.findById(userId).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User id: " + userId + " is not Exist !"));
+        Rating[] ratings = restTemplate.getForObject(ratingURL + userId, Rating[].class);
+        log.info("ratings is {} ", ratings);
+        if (Objects.nonNull(ratings)) {
+            List<Rating> finalRating = Arrays.asList(ratings).stream().map(rating -> {
+                Hotel hotel = restTemplate.getForObject(hotelURL + rating.getHotelId(), Hotel.class);
+                log.info("hotels is {}", hotel);
+                if (Objects.nonNull(hotel)) {
+                    rating.setHotel(hotel);
+                }
+                return rating;
+            }).collect(Collectors.toList());
+            user.setRatings(finalRating);
+        }
+        return user;
     }
 
 
