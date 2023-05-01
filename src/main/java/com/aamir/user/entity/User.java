@@ -8,6 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -33,8 +35,8 @@ public class User implements Serializable {
     @Column(name = "USER_ABOUT")
     private String about;
 
-    @Column(name = "ACTIVE_USER", insertable = true)
-    private Boolean activeUser;
+    @Column(name = "ACTIVE_USER")
+    private Boolean activeUser = true;
     @JsonFormat(pattern = "dd-mm-yyyy")
     @Column(name = "USER_DOB")
     private Timestamp dob;
@@ -45,5 +47,8 @@ public class User implements Serializable {
     @UpdateTimestamp
     @Column(name = "UPDATED_ON")
     private Timestamp updatedOn;
+
+    @Transient
+    List<Rating> ratings = new ArrayList<>();
 
 }
