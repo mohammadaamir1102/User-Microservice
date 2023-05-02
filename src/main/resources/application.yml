@@ -30,5 +30,5 @@ eureka:
 
 service:
   api:
-    rating-url: http://localhost:8085/ratingService/rating/hotelId/
-    hotel-url: http://localhost:8082/hotelService/hotels/findByHotelId/
+    rating-url: http://RATING-SERVICE/ratingService/rating/hotelId/
+    hotel-url: http://HOTEL-SERVICE/hotelService/hotels/findByHotelId/
