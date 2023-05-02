@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map findAllUsers(PaginationDTO paginationDTO) throws ServiceException {
         Page<User> users = userRepository.findAll(paginationService.getPagination(paginationDTO));
-        List<User> activeUsers = users.stream().filter(activeUser -> activeUser.getActiveUser() != false).collect(Collectors.toList());
+        List<User> activeUsers = users.stream().filter(User::getActiveUser).collect(Collectors.toList());
         log.info("/* user records {} */", activeUsers);
         Map<String, Object> datamap = new HashMap<>();
         datamap.put("data", activeUsers);
