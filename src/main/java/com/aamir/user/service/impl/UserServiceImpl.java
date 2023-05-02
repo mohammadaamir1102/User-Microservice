@@ -6,6 +6,7 @@ import com.aamir.user.entity.Rating;
 import com.aamir.user.entity.User;
 import com.aamir.user.exception.ResourceNotFoundException;
 import com.aamir.user.exception.ServiceException;
+import com.aamir.user.external.FeignClientsHotelServiceExample;
 import com.aamir.user.repo.UserRepository;
 import com.aamir.user.service.PaginationService;
 import com.aamir.user.service.UserService;
@@ -31,6 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PaginationService paginationService;
+
+    @Autowired
+    private FeignClientsHotelServiceExample feignClientsHotelServiceExample;
 
     @Value("${service.api.rating-url}")
     private String ratingURL;
@@ -60,6 +64,7 @@ public class UserServiceImpl implements UserService {
         if (Objects.nonNull(ratings)) {
             List<Rating> finalRating = Arrays.asList(ratings).stream().map(rating -> {
                 Hotel hotel = restTemplate.getForObject(hotelURL + rating.getHotelId(), Hotel.class);
+//                Hotel hotel = feignClientsHotelServiceExample.findHotels(rating.getHotelId()); // Feign Client Example
                 log.info("hotels is {}", hotel);
                 if (Objects.nonNull(hotel)) {
                     rating.setHotel(hotel);
