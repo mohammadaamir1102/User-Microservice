@@ -10,6 +10,10 @@ spring:
       ddl-auto: update
   application:
     name: USER-SERVICE
+#  profiles:
+#    active: prod
+  config: # from here this is for cloud config where fetching the configuration from the GIT
+    import: optional:configserver:http://localhost:8086
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -19,14 +23,16 @@ server:
   servlet:
     context-path: /userService
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+
+
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
 
 service:
   api:
