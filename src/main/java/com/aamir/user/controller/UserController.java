@@ -49,7 +49,7 @@ public class UserController {
     }
 
 //    creating fall back method for circuit-breaker
-    public ResponseEntity<User> ratingHotelFallback(String userId, Exception e) {
+    public ResponseEntity<User> ratingHotelFallback(Long userId, Exception e) {
         log.info("Fallback is executed because some issue is happened in Service {}", e.getMessage());
         User user = User.builder()
                 .userEmail("fallback@gmail.com")
