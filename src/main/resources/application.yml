@@ -57,7 +57,7 @@ management:
 resilience4j:
   circuitbreaker:
     instances:
-      ratingHotelCircuitBreaker: # this name should be matched from the UserController class which is written inside the @CircuitBreaker
+      ratingHotelBreaker: # this name should be matched from the UserController class which is written inside the @CircuitBreaker
         registerHealthIndicator: true
         eventConsumerBufferSize: 10
         failureRateThreshold: 50

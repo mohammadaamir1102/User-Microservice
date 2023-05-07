@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/findByUserId/{userId}")
-    @CircuitBreaker(name = "ratingHotelCircuitBreaker", fallbackMethod = "ratingHotelFallback")
+    @CircuitBreaker(name = "ratingHotelBreaker", fallbackMethod = "ratingHotelFallback")
     public ResponseEntity<User> findByUserId(@PathVariable Long userId) throws ResourceNotFoundException {
         log.info("/* users id  {} */ ", userId);
         User user = userService.findById(userId);
@@ -58,7 +58,7 @@ public class UserController {
                 .userId(342423L)
                 .build();
         // need to configuration of resilience 4j in yml file
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.BAD_GATEWAY);
     }
 
     @DeleteMapping("/deleteUser/{userId}")
