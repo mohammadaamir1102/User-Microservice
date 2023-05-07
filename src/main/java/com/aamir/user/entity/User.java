@@ -17,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Builder
 @Entity
 @Table(name = "USER_MICRO")
 public class User implements Serializable {

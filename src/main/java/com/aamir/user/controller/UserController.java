@@ -5,6 +5,7 @@ import com.aamir.user.entity.User;
 import com.aamir.user.exception.ResourceNotFoundException;
 import com.aamir.user.exception.ServiceException;
 import com.aamir.user.service.UserService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,11 +40,25 @@ public class UserController {
     }
 
     @GetMapping("/findByUserId/{userId}")
+    @CircuitBreaker(name = "ratingHotelCircuitBreaker", fallbackMethod = "ratingHotelFallback")
     public ResponseEntity<User> findByUserId(@PathVariable Long userId) throws ResourceNotFoundException {
         log.info("/* users id  {} */ ", userId);
         User user = userService.findById(userId);
         log.info("/* user data {} */ ", user);
         return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+//    creating fall back method for circuit-breaker
+    public ResponseEntity<User> ratingHotelFallback(String userId, Exception e) {
+        log.info("Fallback is executed because some issue is happened in Service {}", e.getMessage());
+        User user = User.builder()
+                .userEmail("fallback@gmail.com")
+                .userName("fallback name")
+                .about("fallback about")
+                .userId(342423L)
+                .build();
+        // need to configuration of resilience 4j in yml file
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteUser/{userId}")
@@ -65,6 +80,7 @@ public class UserController {
         log.info("/* all users {} */ ", allUsers);
         return ResponseEntity.status(HttpStatus.OK).body(allUsers);
     }
+
     //  below api only for learning purpose
     @GetMapping("/findTop1ByUserName/{userName}")
     public ResponseEntity<User> findTop1ByUserName(@PathVariable String userName) throws ResourceNotFoundException {

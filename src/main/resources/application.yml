@@ -38,3 +38,32 @@ service:
   api:
     rating-url: http://RATING-SERVICE/ratingService/rating/hotelId/
     hotel-url: http://HOTEL-SERVICE/hotelService/hotels/findByHotelId/
+
+#actuator configuration and circuitbreaker
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+  endpoint:
+    health:
+      show-details: always
+
+# resilience4j configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      ratingHotelCircuitBreaker: # this name should be matched from the UserController class which is written inside the @CircuitBreaker
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 6s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
